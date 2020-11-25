@@ -1,0 +1,16 @@
+[package]
+name = "rcrypter"
+version = "0.1.0"
+authors = ["Simon Scannell <s.scannell@web.de>"]
+edition = "2018"
+
+[[bin]]
+name = "loader"
+path = "src/loader.rs"
+
+[[bin]]
+name = "client"
+path = "src/crypter.rs"
+
+
+[dependencies]
