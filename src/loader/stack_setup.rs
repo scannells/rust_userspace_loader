@@ -97,14 +97,9 @@ pub fn setup_stack(load_info: &LoadInfo, load_address: usize, interp_base: usize
     // copy the contents of the program arguments onto the stack and build an argv[] pointer array
     // ignore argv[1], as it is the program to be loaded and is interpreted by this program itself
     let mut argv: Vec<usize> = Vec::new();
-    let mut cnt = 0;
-    for mut arg in std::env::args().rev() {
-
-        if cnt == 1 {
-            cnt += 1;
-            continue
-        }
-
+    let mut args: Vec<String> = std::env::args().collect();
+    args.remove(1);
+    for arg in args.iter_mut().rev() {
         stack_pointer -= arg.len() + 1; // +1 for a NULLBYTE
         argv.push(stack_pointer);
         let argv_bytes = unsafe {
@@ -112,8 +107,6 @@ pub fn setup_stack(load_info: &LoadInfo, load_address: usize, interp_base: usize
         };
         argv_bytes.push(0); // push a nullbyte
         write_data(stack_pointer, &argv_bytes);
-
-        cnt += 1;
     }
 
 

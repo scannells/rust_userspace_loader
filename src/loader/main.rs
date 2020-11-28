@@ -8,6 +8,7 @@ fn main() {
 
     // ensure that there is at least one argument to this program, it is the program that should be loaded
     let args: Vec<String> = std::env::args().collect();
+    println!("{:?}", args);
     if args.len() == 1 {
         panic!("Usage: {} /PATH/TO/PROGRAM/TO/LOAD", args[0]);
     }
