@@ -34,7 +34,6 @@ pub struct ElfSegment {
     alignment:      usize,
     data:           Vec<u8>,
     prot:           ProtFlags,
-    map_flags:      MapFlags,
 }
 
 
@@ -52,7 +51,6 @@ impl ElfSegment {
             data: data,
             offset: hdr.offset as usize,
             prot: Self::get_prot_flags_from_progam_flags(hdr.pflags),
-            map_flags: Self::get_map_flags()
         }
     }
 
@@ -72,18 +70,6 @@ impl ElfSegment {
 
         prot_flags
     }
-
-    fn get_map_flags() -> MapFlags {
-        let mut map_flags = MapFlags::empty();
-        map_flags.insert(MapFlags::MAP_PRIVATE);
-        map_flags.insert(MapFlags::MAP_FIXED);
-        map_flags.insert(MapFlags::MAP_ANONYMOUS);
-
-        map_flags
-    }
-    
-
-
 }
 
 
