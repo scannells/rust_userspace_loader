@@ -147,12 +147,6 @@ impl ElfHdr {
 
             // Only parse this segment if it is loadable or an ELF interpreter
             if program_header.ptype == PT_LOAD || program_header.ptype == PT_INTERP {
-
-                // get the contents of this section and verify the section is in bounds
-                
-                
-                
-
                 // if this program type is a loadable segment, add it to the list of segments returned here
                 // otherwise interpret the contents of the section as a String that contains the path to the ELF interpreter 
                 // of this file
@@ -165,6 +159,9 @@ impl ElfHdr {
                         ElfSegment::new(&program_header, buffer[offset..end_offset].to_vec())
                     );
                 } else {
+                    // if this is an interpreter segment, interpret the offset as "absolute" offset
+                    // and read the filename (-1) since it contains a NULL byte that RUST does not want to deal
+                    // with
                     let offset = program_header.offset as usize;
                     elf_interp = Some(
                         String::from_utf8(buffer[offset..(offset + program_header.filesz as usize - 1)].to_vec()).expect("INTERP segment contains invalid filename")
@@ -175,6 +172,7 @@ impl ElfHdr {
 
             current_offset += SIZE_OF_PROGRAM_HDR as usize;
         }
+
         (elf_interp, res)
     }
 }

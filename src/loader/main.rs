@@ -1,3 +1,4 @@
+// enable asm to jump to the entry point of the program
 #![feature(asm)]
 
 mod load_elf;
@@ -25,6 +26,7 @@ fn main() {
                         // to ensure we have the correct entry point and base address for the stack
                         (loader_info.entry_point + loader_load.load_addr, loader_load.load_addr)
                     } else {
+                        // otherwise the entry point is absolute and there is no ELF interpreter base (NULL)
                         (binary_info.entry_point, 0)
                     };
 
